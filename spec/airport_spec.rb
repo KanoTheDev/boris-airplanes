@@ -1,13 +1,41 @@
 require_relative "../lib/airport"
+require_relative "../lib/plane"
 
 describe Airport do
+
 	let(:airport) {Airport.new}
 	it "should have no planes by default" do
 		expect(airport.planes.count).to eq(0)
 	end
 
-	it 'returns weather conditions' do
-		#airport.
+	it "should have a plane when plane lands" do
+		plane = Plane.new
+		airport.land(plane)
+		expect(airport.planes).to eq([plane])
+	end
+
+	it "should not have a plane when a plane takes off" do
+		plane = Plane.new
+		airport.land(plane)
+		airport.release(plane)
+		expect(airport.planes).to eq([])
+	end
+
+	it "should change plane status when plane arrives" do
+		plane = Plane.new
+		airport.land(plane)
+		expect(plane.status).to eq('landed')
+	end
+
+	it "should change plane status when plane takes off" do
+		plane = Plane.new
+		airport.land(plane)
+		airport.release(plane)
+		expect(plane.status).to eq('flying')
+	end
+
+	it 'storm method returns a value' do
+		expect(airport.storm).not_to eq(nil)
 	end
 	
 # Include a weather condition using a module.
@@ -17,11 +45,11 @@ describe Airport do
     # This will require stubbing to stop the random return of the weather.
     # If the airport has a weather condition of stormy,
     # the plane can not land, and must not be in the airport
-    context 'weather conditions' do
-      it 'a plane cannot take off when there is a storm brewing' do
-      end
+    # context 'weather conditions' do
+    #   it 'a plane cannot take off when there is a storm brewing' do
+    #   end
       
-      it 'a plane cannot land in the middle of a storm' do
-      end
-    end
+    #   it 'a plane cannot land in the middle of a storm' do
+    #   end
+    # end
   end
