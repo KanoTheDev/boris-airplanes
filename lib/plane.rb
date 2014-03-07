@@ -1,10 +1,18 @@
 class Plane
 	def initialize
 		@plane
-		@landed = true
+		@status = 'flying'
 	end
 
-	def landed?
-		@landed
+	def status
+		@status
+	end
+
+	def land
+		@status = 'landed'
+	end
+
+	def take_off
+		@status = 'flying'
 	end
 end
