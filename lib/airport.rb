@@ -11,6 +11,7 @@ class Airport
 	def land(plane, weather=Weather.new)
 		if plane.status == 'flying' && weather.now == 'sunny'
 		 	@planes << plane if plane.land
+
 		end
 	end
 

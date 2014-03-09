@@ -8,5 +8,4 @@ describe Weather do
 	it "should respond to weather_now method" do
 		expect(weather.now).not_to eq(nil)
 	end 
-	
 end
