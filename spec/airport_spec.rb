@@ -3,7 +3,7 @@ require_relative "../lib/airport"
 require_relative "../lib/plane"
 
 describe Airport do
-	let(:airport) {Airport.new}
+	let(:airport) {Airport.new(:capacity => 2)}
 	let(:plane) {Plane.new}
 	let(:weather) {double(:weather, {:now => 'sunny'})}
 	it "should have no planes by default" do
@@ -35,7 +35,7 @@ describe Airport do
 
 	end
 
-	context "taking off and landing when stormy"
+	context "taking off and landing when stormy" do
  
     it "should not allow to land the plane when weather is stormy" do
     	weather = double(:weather, {:now => 'stormy'})
@@ -49,5 +49,17 @@ describe Airport do
      	airport.release(plane, weather)
      	expect(airport.planes).to eq([])
     end
+	end
+
+	context "landing when airport is full" do
+		it "should raise error" do
+			2.times do 
+				this_plane_lands = Plane.new
+				airport.land(this_plane_lands, weather)
+			end
+			this_plane_should_not_land = plane
+			expect(lambda {(airport.land(this_plane_should_not_land, weather))}).to raise_error(RuntimeError)
+		end
+	end
 
   end
