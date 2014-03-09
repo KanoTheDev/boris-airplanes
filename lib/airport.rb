@@ -1,5 +1,5 @@
 class Airport
-	DEFAULT_CAPACITY = 5
+	DEFAULT_CAPACITY = 10
 	def initialize(options = {})
 		@planes ||= []
 		self.capacity = options.fetch(:capacity, capacity) 
@@ -18,24 +18,24 @@ class Airport
 	end
 
 	def land(plane, weather=Weather.new)
-		raise "Airport is full" if full?
+		return false if full?
+		return false if weather.now == 'stormy'
 		if plane.status == 'flying' && weather.now == 'sunny' #&& @planes.lenght < @capacity
-		 	@planes << plane if plane.land
-
+		 	@planes << plane 
+		 	plane.land
 		end
 	end
 
 	def release(plane, weather=Weather.new)
-		if plane.status == 'landed'
-			@planes.delete(plane) if plane.take_off
+		return false if weather.now == 'stormy'
+		if plane.status == 'landed' && weather.now == 'sunny'
+			@planes.delete(plane) 
+			plane.take_off
 		end
 	end
 
 	def full?
-		@planes.length == 2
+		@planes.length == @capacity
 	end
-
-
-
 
 end

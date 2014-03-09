@@ -9,7 +9,7 @@ class Weather
 	end
 
 	def now
-		return 'windy' if wind_speed >= 80
+		return 'stormy' if wind_speed >= 50
 		'sunny'
 	end
 end

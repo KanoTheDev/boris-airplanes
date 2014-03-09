@@ -9,57 +9,80 @@ describe Airport do
 	it "should have no planes by default" do
 		expect(airport.planes.count).to eq(0)
 	end
-	context "taking off and landing when sunny" do
 
-		it "should have a plane when plane lands" do
+	context "Taking off and landing when sunny should" do
+
+		it "have a plane when plane lands" do
 			airport.land(plane, weather)
 			expect(airport.planes).to eq([plane])
 		end
 
-		it "should not have a plane when a plane takes off" do
+		it "not have a plane when a plane takes off" do
 			airport.land(plane, weather)
-			airport.release(plane)
+			airport.release(plane, weather)
 			expect(airport.planes).to eq([])
 		end
 
-		it "should change plane's status when plane arrives" do
+		it "change plane's status when plane arrives" do
 			airport.land(plane, weather)
 			expect(plane.status).to eq('landed')
 		end
 
-		it "should change plane's status when plane takes off" do
+		it "change plane's status when plane takes off" do
 			airport.land(plane, weather)
-			airport.release(plane)
+			airport.release(plane, weather)
 			expect(plane.status).to eq('flying')
 		end
 
 	end
 
-	context "taking off and landing when stormy" do
+	context "Taking off and landing at the airport when stormy should not allow to" do
  
-    it "should not allow to land the plane when weather is stormy" do
+    it "land the plane when weather is stormy" do
     	weather = double(:weather, {:now => 'stormy'})
      	airport.land(plane, weather)
      	expect(airport.planes).to eq([])
     end
 
-    it "should not allow to take off the plane when weather is stormy" do
+    it "take off the plane when weather is stormy" do
     	airport.land(plane, weather)
     	weather = double(:weather, {:now => 'stormy'})
      	airport.release(plane, weather)
-     	expect(airport.planes).to eq([])
+     	expect(airport.planes).to eq([plane])
     end
 	end
 
 	context "landing when airport is full" do
-		it "should raise error" do
+		it "should return stop landing and false" do
 			2.times do 
 				this_plane_lands = Plane.new
 				airport.land(this_plane_lands, weather)
 			end
 			this_plane_should_not_land = plane
-			expect(lambda {(airport.land(this_plane_should_not_land, weather))}).to raise_error(RuntimeError)
+			expect(airport.land(this_plane_should_not_land, weather)).to eq(false)
 		end
 	end
+end
 
-  end
+describe "The gand finale (last spec)" do
+ let(:airport) {Airport.new(:capacity => 5)}
+ let(:weather) {double(:weather, {:now => 'sunny'})}
+    it 'all planes can land and all planes can take off' do
+      5.times do
+        plane = Plane.new
+        airport.land(plane, weather)
+      end
+      
+      until airport.planes.length < 1 do
+        new_weather = Weather.new
+        plane = airport.planes.first
+        if airport.release(plane, new_weather)
+          puts "#{plane} released"
+        else
+          puts "#{plane} not released. Now it is too #{weather.now}"
+        end
+      end
+      expect(airport.planes.length).to eq(0)
+    end
+
+end
