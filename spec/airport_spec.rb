@@ -4,39 +4,36 @@ require_relative "../lib/plane"
 describe Airport do
 
 	let(:airport) {Airport.new}
+	let(:plane) {Plane.new}
 	it "should have no planes by default" do
 		expect(airport.planes.count).to eq(0)
 	end
 
 	it "should have a plane when plane lands" do
-		plane = Plane.new
 		airport.land(plane)
 		expect(airport.planes).to eq([plane])
 	end
 
 	it "should not have a plane when a plane takes off" do
-		plane = Plane.new
 		airport.land(plane)
 		airport.release(plane)
 		expect(airport.planes).to eq([])
 	end
 
 	it "should change plane status when plane arrives" do
-		plane = Plane.new
 		airport.land(plane)
 		expect(plane.status).to eq('landed')
 	end
 
 	it "should change plane status when plane takes off" do
-		plane = Plane.new
 		airport.land(plane)
 		airport.release(plane)
 		expect(plane.status).to eq('flying')
 	end
 
-	it 'storm method returns a value' do
-		expect(airport.storm).not_to eq(nil)
-	end
+	
+
+
 	
 # Include a weather condition using a module.
     # The weather must be random and only have two states "sunny" or "stormy".
