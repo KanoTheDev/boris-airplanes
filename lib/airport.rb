@@ -1,7 +1,4 @@
-require_relative "weather"
-
 class Airport
-	include Weather
 	def initialize
 		@planes ||= []
 	end
@@ -24,7 +21,4 @@ class Airport
 		end
 	end
 
-
-	
-	
 end
